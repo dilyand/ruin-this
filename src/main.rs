@@ -3,7 +3,7 @@ use std::io;
 use std::io::{BufRead, BufReader, Result};
 
 fn main() {
-    println!("Give me a word and I'll tell you similar words.");
+    println!("Hello! What can I ruin for you today?");
 
     let mut input = String::new();
 
@@ -11,9 +11,9 @@ fn main() {
         .read_line(&mut input)
         .expect("Failed to read line");
 
-    let vars = word_variations(&input.to_lowercase().trim());
+    let vars: Vec<String> = word_variations(&input.to_lowercase().trim()).iter().map(|w| {uppercase_first_letter(w)}).collect();
 
-    println!("Here are some variations: {:?}", vars);
+    println!("Ah, did you mean: {:?}", vars);
 }
 
 fn is_word(w: &str) -> bool {
@@ -52,4 +52,12 @@ fn word_variations(w: &str) -> Vec<String> {
     }
 
     return v;
+}
+
+fn uppercase_first_letter(s: &str) -> String {
+    let mut c = s.chars();
+    match c.next() {
+        None => String::new(),
+        Some(f) => f.to_uppercase().chain(c).collect(),
+    }
 }
