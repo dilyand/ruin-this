@@ -4,7 +4,9 @@ Ruins a band name or song / book / movie title by changing just one letter.
 
 # How to run
 
-Download the binary and run. Only works on Mac.
+Download the binary and run. Load up on patience as it looks up every word in the dictionary in a very naive way.
+
+Only works on Mac.
 
 # Example
 
