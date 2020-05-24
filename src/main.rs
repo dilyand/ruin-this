@@ -11,9 +11,9 @@ fn main() {
         .read_line(&mut input)
         .expect("Failed to read line");
 
-    let vars: Vec<String> = word_variations(&input.to_lowercase().trim()).iter().map(|w| {uppercase_first_letter(w)}).collect();
+    let vars: Vec<String> = phrase_variations(&input.to_lowercase().trim());
 
-    println!("Ah, did you mean: {:?}", vars);
+    println!("Ah, did you mean: {:?}?", vars);
 }
 
 fn is_word(w: &str) -> bool {
@@ -52,6 +52,22 @@ fn word_variations(w: &str) -> Vec<String> {
     }
 
     return v;
+}
+
+fn phrase_variations(s: &str) -> Vec<String> {
+    let words: Vec<String> = s.split(" ").map(|w| w.to_owned()).collect();
+
+    let mut results: Vec<String> = Vec::new();
+
+    for word in &words {
+        let variations = word_variations(word);
+        for var in variations {
+            let result: String = (&words.join(" ").replace(word, &var)).to_owned();
+            results.push(result);
+        }
+    }
+
+    return results.iter().map(|phrase| {phrase.split(" ").collect::<Vec<&str>>().iter().map(|w| uppercase_first_letter(w)).collect::<Vec<String>>().join(" ")}).collect();
 }
 
 fn uppercase_first_letter(s: &str) -> String {
