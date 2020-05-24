@@ -1,4 +1,3 @@
-use std::fs::File;
 use std::io;
 use std::io::{BufRead, BufReader, Result};
 
@@ -17,8 +16,9 @@ fn main() {
 }
 
 fn is_word(w: &str) -> bool {
-    let file = File::open("dict/english3.txt").expect("Cannot open file.");
-    let reader = BufReader::new(file);
+    const BYTES: &[u8] = include_bytes!("../dict/english3.txt");
+
+    let reader = BufReader::new(BYTES);
 
     let result: Vec<_> = reader
         .lines()
@@ -67,7 +67,18 @@ fn phrase_variations(s: &str) -> Vec<String> {
         }
     }
 
-    return results.iter().map(|phrase| {phrase.split(" ").collect::<Vec<&str>>().iter().map(|w| uppercase_first_letter(w)).collect::<Vec<String>>().join(" ")}).collect();
+    return results
+        .iter()
+        .map(|phrase| {
+            phrase
+                .split(" ")
+                .collect::<Vec<&str>>()
+                .iter()
+                .map(|w| uppercase_first_letter(w))
+                .collect::<Vec<String>>()
+                .join(" ")
+        })
+        .collect();
 }
 
 fn uppercase_first_letter(s: &str) -> String {
